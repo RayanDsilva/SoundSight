@@ -1,0 +1,532 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Videos</title>
+</head>
+<body>
+    <h1>Enter a sentence in sign language:</h1>
+    <form method="post">
+        <input type="text" name="sentence">
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if avatar_videos %}
+        <h2>Avatar Videos:</h2>
+        {% for video in avatar_videos %}
+            <video width="320" height="240" controls autoplay>
+                <source src="{{ url_for('download_file', filename=video) }}" type="video/mp4">
+            </video>
+        {% endfor %}
+    {% endif %}
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Avatar</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Language Avatar</h1>
+        <form action="/" method="post">
+            <label for="sentence">Enter your sentence:</label>
+            <input type="text" id="sentence" name="sentence" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if avatar_videos %}
+        <div class="videos">
+            {% for video in avatar_videos %}
+            <video width="320" height="240" controls>
+                <source src="{{ url_for('download_file', filename=video) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Avatar</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Language Avatar</h1>
+        <form id="textForm" action="/" method="post">
+            <label for="sentence">Enter your sentence:</label>
+            <input type="text" id="sentence" name="sentence" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="audioForm">
+            <p>Or speak your sentence:</p>
+            <button id="startRecordBtn">Start Recording</button>
+            <button id="stopRecordBtn" style="display:none;">Stop Recording</button>
+        </div>
+
+        <div id="recognitionResult" style="display:none;">
+            <p id="recognitionText"></p>
+        </div>
+
+        {% if avatar_videos %}
+        <div class="videos">
+            {% for video in avatar_videos %}
+            <video width="320" height="240" controls>
+                <source src="{{ url_for('download_file', filename=video) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Function to handle speech recognition
+        const recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+            const result = event.results[0][0].transcript;
+            document.getElementById('sentence').value = result;
+            document.getElementById('textForm').submit();
+        }
+
+        document.getElementById('startRecordBtn').addEventListener('click', () => {
+            recognition.start();
+            document.getElementById('startRecordBtn').style.display = 'none';
+            document.getElementById('stopRecordBtn').style.display = 'block';
+        });
+
+        document.getElementById('stopRecordBtn').addEventListener('click', () => {
+            recognition.stop();
+            document.getElementById('stopRecordBtn').style.display = 'none';
+            document.getElementById('startRecordBtn').style.display = 'block';
+        });
+
+        recognition.onend = () => {
+            document.getElementById('recognitionResult').style.display = 'block';
+        }
+    </script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Avatar</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Language Avatar</h1>
+        <form id="textForm" action="/" method="post">
+            <label for="sentence">Enter your sentence:</label>
+            <input type="text" id="sentence" name="sentence" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="audioForm">
+            <p>Or speak your sentence:</p>
+            <button id="startRecordBtn">Start Recording</button>
+          iv>
+    </div>
+
+    <script>
+        const videos = {{ avatar_videos | tojson }};
+        let currentVideoIndex = 0;
+
+        function playNextVideo() {
+            if (currentVideoIndex < videos.length) {
+                const videoSrc = videos[currentVideoIndex];
+                const videoElement = document.createElement('video');
+                videoElement.src = videoSrc;
+                videoElement.autoplay = true;
+                videoElement.controls = true;
+                videoElement.addEventListener('ended', () => {
+                    currentVideoIndex++;
+                    playNextVideo();
+                });
+                document.getElementById('videosContainer').innerHTML = '';
+                document.getElementById('videosContainer').appendChild(videoElement);
+            }
+        }
+
+        // Function to handle speech recognition
+        const recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+            const result = event.results[0][0].transcript;
+            document.getElementById('sentence').value = result;
+            document.getElementById('textForm').submit();
+        }
+
+        document.getElementById('startRecordBtn').addEventListener('click', () => {
+            recognition.start();
+            document.getElementById('startRecordBtn').style.display = 'none';
+            document.getElementById('stopRecordBtn').style.display = 'block';
+        });
+
+        document.getElementById('stopRecordBtn').addEventListener('click', () => {
+            recognition.stop();
+            document.getElementById('stopRecordBtn').style.display = 'none';
+            document.getElementById('startRecordBtn').style.display = 'block';
+        });
+
+        recognition.onend = () => {
+            document.getElementById('recognitionResult').style.display = 'block';
+            playNextVideo();
+        }
+    </script>
+</body>
+</html>  <button id="stopRecordBtn" style="display:none;">Stop Recording</button>
+        </div>
+
+        <div id="recognitionResult" style="display:none;">
+            <p id="recognitionText"></p>
+        </div>
+
+        <div id="videosContainer">
+            <-- Videos will be dynamically added here -->
+        <!-- </d --> 
+
+
+        <!-- <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sign Language Avatar</title>
+            <link rel="stylesheet" href="static/styles.css">
+        </head>
+        <body>
+            <div class="container">
+                <h1>Sign Language Avatar</h1>
+                <form id="textForm" action="/" method="post">
+                    <label for="sentence">Enter your sentence:</label>
+                    <input type="text" id="sentence" name="sentence" required>
+                    <button type="submit">Submit</button>
+                </form>
+        
+                <div id="audioForm">
+                    <p>Or speak your sentence:</p>
+                    <button id="startRecordBtn">Start Recording</button>
+                    <button id="stopRecordBtn" style="display:none;">Stop Recording</button>
+                </div>
+        
+                <div id="recognitionResult" style="display:none;">
+                    <p id="recognitionText"></p>
+                </div>
+        
+                <div class="videos">
+                    {% if avatar_videos %}
+                        {% for video in avatar_videos %}
+                            <video width="320" height="240" controls>
+                                <source src="{{ url_for('download_file', filename=video) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        
+            <script>
+                // Function to handle speech recognition
+                const recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+        
+                recognition.onresult = (event) => {
+                    const result = event.results[0][0].transcript;
+                    document.getElementById('sentence').value = result;
+                    document.getElementById('textForm').submit();
+                }
+        
+                document.getElementById('startRecordBtn').addEventListener('click', () => {
+                    recognition.start();
+                    document.getElementById('startRecordBtn').style.display = 'none';
+                    document.getElementById('stopRecordBtn').style.display = 'block';
+                });
+        
+                document.getElementById('stopRecordBtn').addEventListener('click', () => {
+                    recognition.stop();
+                    document.getElementById('stopRecordBtn').style.display = 'none';
+                    document.getElementById('startRecordBtn').style.display = 'block';
+                });
+        
+                recognition.onend = () => {
+                    document.getElementById('recognitionResult').style.display = 'block';
+                }
+            </script>
+        </body>
+        </html>
+     //Actual -->
+        
+
+     <!-- <!DOCTYPE html>
+         <html lang="en">
+         <head>
+             <meta charset="UTF-8">
+             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+             <title>Sign Language Avatar</title>
+             <link rel="stylesheet" href="static/styles.css">
+         </head>
+         <body>
+             <div class="container">
+                 <h1>Sign Language Avatar</h1>
+                 <form id="textForm" action="/" method="post">
+                     <label for="sentence">Enter your sentence:</label>
+                     <input type="text" id="sentence" name="sentence" required>
+                     <button type="submit">Submit</button>
+                 </form>
+         
+                 <div id="audioForm">
+                     <p>Or speak your sentence:</p>
+                     <button id="startRecordBtn">Start Recording</button>
+                     <button id="stopRecordBtn" style="display:none;">Stop Recording</button>
+                 </div>
+         
+                 <div id="recognitionResult" style="display:none;">
+                     <p id="recognitionText"></p>
+                 </div>
+         
+                 <div class="videos">
+                     {% if avatar_videos %}
+                         {% for video in avatar_videos %}
+                             <video width="320" height="240" autoplay>
+                                 <source src="{{ url_for('download_file', filename=video) }}" type="video/mp4">
+                                 Your browser does not support the video tag.
+                             </video>
+                         {% endfor %}
+                     {% endif %}
+                 </div>
+             </div>
+         
+             <script>
+                 // Function to handle speech recognition
+                 const recognition = new webkitSpeechRecognition();
+                 recognition.continuous = false;
+                 recognition.interimResults = false;
+         
+                 recognition.onresult = (event) => {
+                     const result = event.results[0][0].transcript;
+                     document.getElementById('sentence').value = result;
+                     document.getElementById('textForm').submit();
+                 }
+         
+                 document.getElementById('startRecordBtn').addEventListener('click', () => {
+                     recognition.start();
+                     document.getElementById('startRecordBtn').style.display = 'none';
+                     document.getElementById('stopRecordBtn').style.display = 'block';
+                 });
+         
+                 document.getElementById('stopRecordBtn').addEventListener('click', () => {
+                     recognition.stop();
+                     document.getElementById('stopRecordBtn').style.display = 'none';
+                     document.getElementById('startRecordBtn').style.display = 'block';
+                 });
+         
+                 recognition.onend = () => {
+                     document.getElementById('recognitionResult').style.display = 'block';
+                 }
+             </script>
+         </body>
+         </html>                    -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Avatar</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Language Avatar</h1>
+        <form id="textForm" action="/" method="post">
+            <label for="sentence">Enter your sentence:</label>
+            <input type="text" id="sentence" name="sentence" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="audioForm">
+            <p>Or speak your sentence:</p>
+            <button id="startRecordBtn">Start Recording</button>
+            <button id="stopRecordBtn" style="display:none;">Stop Recording</button>
+        </div>
+
+        <div id="recognitionResult" style="display:none;">
+            <p id="recognitionText"></p>
+        </div>
+
+        <div class="videos">
+            <video id="avatarVideo" width="540" height="440" controls autoplay>
+                <source src="{{ url_for('download_file', filename=avatar_videos[0]) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <style>
+        .videos{
+            padding-left: 470px;
+        }
+    </style>
+
+    <script>
+        const avatarVideos = {{ avatar_videos | tojson }};
+        let currentIndex = 0;
+        const videoElement = document.getElementById('avatarVideo');
+
+        videoElement.addEventListener('ended', playNextVideo);
+
+        function playNextVideo() {
+            currentIndex++;
+            if (currentIndex < avatarVideos.length) {
+                videoElement.src = "{{ url_for('download_file', filename='') }}" + avatarVideos[currentIndex];
+                videoElement.play();
+            }
+        }
+
+        // Function to handle speech recognition
+        const recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+            const result = event.results[0][0].transcript;
+            document.getElementById('sentence').value = result;
+            document.getElementById('textForm').submit();
+        }
+
+        document.getElementById('startRecordBtn').addEventListener('click', () => {
+            recognition.start();
+            document.getElementById('startRecordBtn').style.display = 'none';
+            document.getElementById('stopRecordBtn').style.display = 'block';
+        });
+
+        document.getElementById('stopRecordBtn').addEventListener('click', () => {
+            recognition.stop();
+            document.getElementById('stopRecordBtn').style.display = 'none';
+            document.getElementById('startRecordBtn').style.display = 'block';
+        });
+
+        recognition.onend = () => {
+            document.getElementById('recognitionResult').style.display = 'block';
+        }
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Avatar</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <a class="returna" href="javascript:window.location.href='/'">Return</a>
+        <h1>Sign Language Avatar</h1>
+        <form id="textForm" action="/open_audio" method="post">
+            <label for="sentence">Enter your sentence:</label>
+            <input type="text" id="sentence" name="sentence" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="audioForm">
+            <p class="or">Or speak your sentence:</p>
+            <button id="startRecordBtn">Start Recording</button>
+            <button id="stopRecordBtn" style="display:none;">Stop Recording</button>
+        </div>
+
+        <div id="recognitionResult" style="display:none;">
+            <p id="recognitionText"></p>
+        </div>
+
+        <div class="videos">
+            <video id="avatarVideo" width="540" height="440" autoplay>
+                <source src="{{ url_for('download_file', filename=avatar_videos[0]) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <style>
+        .videos{
+            padding-left: 470px;
+        }
+    </style>
+
+    <script>
+        // const avatarVideos = { { avatar_videos | tojson } };
+        const avatarVideos = JSON.parse('{{ avatar_videos | tojson }}');
+        let currentIndex = 0;
+        const videoElement = document.getElementById('avatarVideo');
+
+        videoElement.addEventListener('ended', playNextVideo);
+
+        function playNextVideo() {
+            currentIndex++;
+            if (currentIndex < avatarVideos.length) {
+                videoElement.src = "{{ url_for('download_file', filename='') }}" + avatarVideos[currentIndex];
+                videoElement.play();
+            }
+        }
+
+        // Function to handle speech recognition
+        const recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+            const result = event.results[0][0].transcript;
+            document.getElementById('sentence').value = result;
+            document.getElementById('textForm').submit();
+        }
+
+        document.getElementById('startRecordBtn').addEventListener('click', () => {
+            recognition.start();
+            document.getElementById('startRecordBtn').style.display = 'none';
+            document.getElementById('stopRecordBtn').style.display = 'block';
+        });
+
+        document.getElementById('stopRecordBtn').addEventListener('click', () => {
+            recognition.stop();
+            document.getElementById('stopRecordBtn').style.display = 'none';
+            document.getElementById('startRecordBtn').style.display = 'block';
+        });
+
+        recognition.onend = () => {
+            document.getElementById('recognitionResult').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

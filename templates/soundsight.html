@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundSight</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="cont">
+        <div class="navbar">
+            <img class="logo" src="/static/images/soundsightlogo.jpg" alt="Logo">
+            <nav>
+                <ul>
+                    <li><a href="#about">ABOUT</a></li>
+                </ul>
+            </nav>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>SOUNDSIGHT</h1>
+                <p class="maincap">Assistive Technology for Hearing and Visually Impaired</p>
+
+            </div>
+            <div class="col">
+                <h2 class="toolsname">ASSISTIVE TOOLS</h2>
+                <div class="project-card">
+                    <img src="/static/images/project1-thumbnail.png" alt="Project 1">
+                    <h3>Object Detection</h3>
+                    <p class="cap">Hear and Walk Around</p>
+                    <a href="/open_object" id="voiceLink1" onclick="speakText('You selected object detection')">Open</a>
+                </div>
+                <div class="project-card">
+                    <img src="/static/images/project2-thumbnail.png" alt="Project 2">
+                    <h3>Sign Language</h3>
+                    <p class="cap">Talk Through Sign</p>
+                    <a href="/open_audio" id="voiceLink2" onclick="speakText('You selected Speech to sign language')">Open</a>
+                </div>
+            </div>
+
+        </div>
+        <section id="about">
+            <div>
+                <h2>Our Mission</h2>
+                <p><p>At SoundSight, our mission is to break down barriers to communication and accessibility through innovative technology. We believe that everyone, regardless of their abilities or limitations, should have equal access to information and communication tools. With our real-time object detection and audio/text to sign language features, we aim to empower individuals with visual or hearing impairments to navigate and interact with the world around them more independently. By leveraging cutting-edge technology, we strive to create a more inclusive society where everyone can participate fully and equally.</p>
+            </div>
+            <div>
+                <h2>Our Team</h2>
+                <section id="our-team">
+                    <div class="team-member">
+                        <img src="/static/images/darren.jpg" alt="Team Member 1">
+                        <h3 class="name">Darren Dsa</h3>
+                        <p>USN: 4SO20AI017</p>
+                        <p>Email: 20ai017.darren@sjec.ac.in</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="/static/images/rayan.jpg" alt="Team Member 2">
+                        <h3 class="name">Rayan Dsilva</h3>
+                        <p>USN: 4SO20AI041</p>
+                        <p>Email: 20ai041.rayan@sjec.ac.in</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="/static/images/roshan.jpg" alt="Team Member 3">
+                        <h3 class="name">Roshan Girish</h3>
+                        <p>USN: 4SO20AI046</p>
+                        <p>Email: 20ai046.roshan@sjec.ac.in</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="/static/images/wilson.jpg" alt="Team Member 4">
+                        <h3 class="name">Wilson Aranha</h3>
+                        <p>USN: 4SO20AI061</p>
+                        <p>Email: 20ai061.wilson@sjec.ac.in</p>
+                    </div>
+                    
+                </section>
+                
+            </div>
+        </section>
+    </div>
+    <script>
+        // Function to speak text when anchor tag is clicked
+        function speakText(text) {
+          // Check if browser supports speech synthesis
+          if ('speechSynthesis' in window) {
+            // Create a new instance of SpeechSynthesisUtterance
+            var message = new SpeechSynthesisUtterance();
+            // Set the text to be spoken
+            message.text = text;
+            // Use default speech synthesis voice
+            message.voice = speechSynthesis.getVoices()[0];
+            // Speak the text
+            speechSynthesis.speak(message);
+          } else {
+            // Browser doesn't support speech synthesis
+            alert("Sorry, your browser doesn't support speech synthesis.");
+          }
+        }
+        </script>
+    
+
+   
+
+
+
+</body>
+</html>
